@@ -13,3 +13,4 @@ to do
 
 - text
 - pattern
+- undo/redo
