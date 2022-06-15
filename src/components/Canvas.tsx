@@ -1,8 +1,19 @@
 import { LineConfig } from 'konva/lib/shapes/Line';
+
 import React from 'react';
-import { Stage, Layer, Line, KonvaNodeEvents } from 'react-konva';
+import { Stage, Layer, Line, KonvaNodeEvents, Rect, Circle } from 'react-konva';
 
 import styled from 'styled-components';
+import { ShapeNode } from '../types';
+import { isRect } from '../utils/layers';
+
+export const renderShape = (shape: ShapeNode) => {
+  if (isRect(shape)) {
+    return <Rect {...shape} stroke={shape.strokeColor || '#000'} />;
+  } else {
+    return <Circle {...shape} stroke={shape.strokeColor || '#000'} />;
+  }
+};
 
 type Props = {
   handleMouseDown: KonvaNodeEvents['onMouseDown'];
@@ -10,6 +21,7 @@ type Props = {
   handleMouseUp: KonvaNodeEvents['onMouseUp'];
   lines: (LineConfig & { strokeWidth: number })[];
   strokeColor: string;
+  shapes: ShapeNode[];
 };
 
 export const CanvasApp: React.FC<Props> = ({
@@ -17,6 +29,7 @@ export const CanvasApp: React.FC<Props> = ({
   handleMouseMove,
   handleMouseUp,
   lines,
+  shapes,
 }) => {
   return (
     <Container>
@@ -41,6 +54,7 @@ export const CanvasApp: React.FC<Props> = ({
               }
             />
           ))}
+          {shapes.map((s, i) => renderShape(s))}
         </Layer>
       </Stage>
     </Container>

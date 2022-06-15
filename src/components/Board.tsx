@@ -3,22 +3,33 @@ import React from 'react';
 import { Toolbox } from './Toolbox';
 import { CanvasApp } from './Canvas';
 import { KonvaNodeEvents } from 'react-konva';
+import { Button, Col, Row } from 'antd';
 import styled from 'styled-components';
-import { Col, Row } from 'antd';
+import { getHeightAndWidthFromPos, getRadiusFromPos } from '../utils/layers';
+
 export const Board: React.FC = () => {
   const [tool, setTool] = React.useState('pen');
   const [lines, setLines] = React.useState<any[]>([]);
+  const [startPos, SetStartPos] = React.useState<[number, number]>([0, 0]);
+  const [shapes, setShapes] = React.useState<any[]>([]);
+
   const [strokeColor, setStrokeColor] = React.useState<string>('#df4b26');
   const [strokeWidth, setstrokeWidth] = React.useState<number>(5);
   const isDrawing = React.useRef(false);
 
   const handleMouseDown: KonvaNodeEvents['onMouseDown'] = (e) => {
-    isDrawing.current = true;
-    const pos = e.target?.getStage()?.getPointerPosition();
-    setLines([
-      ...lines,
-      { tool, points: [pos?.x, pos?.y], strokeWidth, strokeColor },
-    ]);
+    if (tool !== 'rect' && tool !== 'circle') {
+      isDrawing.current = true;
+      const pos = e.target?.getStage()?.getPointerPosition();
+      setLines([
+        ...lines,
+        { tool, points: [pos?.x, pos?.y], strokeWidth, strokeColor },
+      ]);
+    } else {
+      const pos = e.target?.getStage()?.getPointerPosition();
+
+      SetStartPos([pos?.x || 0, pos?.y || 0]);
+    }
   };
 
   const handleMouseMove: KonvaNodeEvents['onMouseMove'] = (e) => {
@@ -37,13 +48,46 @@ export const Board: React.FC = () => {
     setLines(lines.concat());
   };
 
-  const handleMouseUp: KonvaNodeEvents['onMouseUp'] = () => {
+  const handleMouseUp: KonvaNodeEvents['onMouseUp'] = (e) => {
     isDrawing.current = false;
+    if (tool === 'rect' || tool === 'circle') {
+      const pos = e.target?.getStage()?.getPointerPosition();
+
+      if (pos?.x && pos?.y) {
+        const [width, height] = getHeightAndWidthFromPos(
+          ...startPos,
+          pos.x,
+          pos.y
+        );
+        const radius = getRadiusFromPos(...startPos, pos.x, pos.y);
+
+        setShapes([
+          ...shapes,
+          {
+            tool,
+            x: startPos[0],
+            y: startPos[1],
+            height: tool === 'rect' ? height : undefined,
+            width: tool === 'rect' ? width : undefined,
+            radius: tool === 'circle' ? radius : undefined,
+            strokeWidth,
+            strokeColor,
+          },
+        ]);
+      }
+    }
   };
 
   return (
     <Wrapper>
-      <Col span={3}>
+      <Col
+        span={4}
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
+      >
         <Toolbox
           tool={tool}
           setTool={setTool}
@@ -51,9 +95,19 @@ export const Board: React.FC = () => {
           setStrokeColor={setStrokeColor}
           setstrokeWidth={setstrokeWidth}
           strokeWidth={strokeWidth}
-          setLines={setLines}
         />
+        <Button
+          type={'primary'}
+          danger
+          onClick={() => {
+            setLines([]);
+            setShapes([]);
+          }}
+        >
+          clear canvas
+        </Button>
       </Col>
+
       <Col>
         <CanvasApp
           handleMouseDown={handleMouseDown}
@@ -61,6 +115,7 @@ export const Board: React.FC = () => {
           handleMouseUp={handleMouseUp}
           lines={lines}
           strokeColor={strokeColor}
+          shapes={shapes}
         />
       </Col>
     </Wrapper>
