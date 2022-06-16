@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/mini-sketch-react/static/css/main.f093f21f.css",
+    "main.js": "/mini-sketch-react/static/js/main.244e5438.js",
+    "index.html": "/mini-sketch-react/index.html",
+    "main.f093f21f.css.map": "/mini-sketch-react/static/css/main.f093f21f.css.map",
+    "main.244e5438.js.map": "/mini-sketch-react/static/js/main.244e5438.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f093f21f.css",
+    "static/js/main.244e5438.js"
+  ]
+}
