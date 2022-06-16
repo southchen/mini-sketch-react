@@ -29,7 +29,7 @@ export const Toolbox: React.FC<Props> = ({
               setTool('pen');
             }}
           >
-            <img style={{ width: 25, height: 25 }} src="/pen.svg" />
+            <img style={{ width: 25, height: 25 }} src="./pen.svg" />
           </IconButton>
           <IconButton
             style={{
@@ -40,7 +40,7 @@ export const Toolbox: React.FC<Props> = ({
               setTool('eraser');
             }}
           >
-            <img style={{ width: 25, height: 25 }} src="/earser.svg" />
+            <img style={{ width: 25, height: 25 }} src="./earser.svg" />
           </IconButton>
         </Row>
         <Row>
@@ -50,7 +50,7 @@ export const Toolbox: React.FC<Props> = ({
               setTool('rect');
             }}
           >
-            <img style={{ width: 25, height: 25 }} src="/rect.svg" />
+            <img style={{ width: 25, height: 25 }} src="./rect.svg" />
           </IconButton>
           <IconButton
             style={{
@@ -60,7 +60,7 @@ export const Toolbox: React.FC<Props> = ({
               setTool('circle');
             }}
           >
-            <img style={{ width: 25, height: 25 }} src="/compass.svg" />
+            <img style={{ width: 25, height: 25 }} src="./compass.svg" />
           </IconButton>
         </Row>
         <Row>
@@ -70,7 +70,7 @@ export const Toolbox: React.FC<Props> = ({
               setTool('text');
             }}
           >
-            <img style={{ width: 20, height: 20 }} src="/text.svg" />
+            <img style={{ width: 20, height: 20 }} src="./text.svg" />
           </IconButton>
           <IconButton
             style={{ backgroundColor: tool === 'sun' ? 'lightblue' : 'white' }}
@@ -78,7 +78,7 @@ export const Toolbox: React.FC<Props> = ({
               setTool('sun');
             }}
           >
-            <img style={{ width: 25, height: 25 }} src="/images/sun.svg" />
+            <img style={{ width: 25, height: 25 }} src="./images/sun.svg" />
           </IconButton>
         </Row>
       </Wrapper>
